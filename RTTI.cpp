@@ -16,45 +16,43 @@ const std::shared_ptr<__TypeInfo> __Register::GetInfoOfClass( std::ptrdiff_t poi
     if ( Globals::registeredPointers.find( pointer ) != Globals::registeredPointers.end( )) {
         return Globals::registeredPointers.at( pointer );
     } else {
-        return nullptr;
+        return Globals::NULL_INFO;
     }
 }
 
-std::pair<bool, std::ptrdiff_t> __CheckClassHierarchy( const std::string &childName, const std::string &parentName ) {
-    bool isInherited = false;
+std::ptrdiff_t __GetDiffBetweenClasses( const std::string &childName, const std::string &parentName ) {
     std::ptrdiff_t diff = 0;
+    if (childName == parentName) {
+        return diff;
+    }
     auto parentInfos = GL::Globals::registeredClasses.at(childName)->getParentInfos();
     int numOfParents = static_cast<int>(parentInfos.size( ));
     if ( numOfParents ) {
         for ( auto parentInfo : parentInfos ) {
             if ( parentInfo.first == parentName ) {
-                isInherited = true;
                 diff += parentInfo.second->offset;
-                return std::make_pair(isInherited, diff);
+                return diff;
             } else {
-                auto result = __CheckClassHierarchy( parentInfo.first, parentName );
-                isInherited = result.first || isInherited;
-                if (isInherited) {
-                    diff += result.second;
-                    return std::make_pair(isInherited, diff);
-                }
+                diff += __GetDiffBetweenClasses( parentInfo.first, parentName );
             }
         }
     }
-    return std::make_pair(isInherited, diff);
+    return diff;
 }
 
-bool __CheckActualHierarchy( const std::string &childName, std::ptrdiff_t parentPointer) {
+bool __WhetherChildIsParent( const std::string &childName, const std::string &parentName) {
+    if (childName == parentName) {
+        return true;
+    }
     bool isInherited = false;
     auto parentInfos = GL::Globals::registeredClasses.at(childName)->getParentInfos();
-    auto parentName = GL::Globals::registeredPointers.at(parentPointer)->getName();
     int numOfParents = static_cast<int>(parentInfos.size( ));
     if ( numOfParents ) {
         for ( auto parentInfo : parentInfos ) {
             if ( parentInfo.first == parentName ) {
                 isInherited = true;
             } else {
-                isInherited = isInherited || __CheckActualHierarchy( parentInfo.first, parentPointer );
+                isInherited = isInherited || __WhetherChildIsParent( parentInfo.first, parentName );
             }
             if (isInherited) {
                 return isInherited;

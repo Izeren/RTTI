@@ -8,7 +8,7 @@
 
 #include <vector>
 #include <cstddef>
-class __TypeInfo;
+#include "TypeInfo.h"
 
 namespace GL {
     class Globals {
@@ -18,5 +18,6 @@ namespace GL {
         static std::map<std::string, std::shared_ptr<__TypeInfo>> registeredClasses;
         static std::map<std::ptrdiff_t, std::shared_ptr<__TypeInfo>> registeredPointers;
         static std::ptrdiff_t temp;
+        static const std::shared_ptr<__TypeInfo> NULL_INFO;
     };
 };

@@ -4,56 +4,60 @@
 
 #include "Globals.h"
 
-class A {
+class D {
+public:
+    int value;
+    D(int value = 0) : value(value) {}
 };
 
-class B : public A {
-
+class E {
+public:
+    int anotherValue;
+    E(int anotherValue = 0) : anotherValue(anotherValue) {}
 };
 
-class D {};
-
-class C : public D, public B {
-
+class C {
+public:
+    std::string branchName;
+    C(std::string branchName = "") : branchName(branchName) {}
 };
 
-//A a(0);
+class B : public D, public E {
+public:
+    B(int value = 1, int anotherValue = 2) : D(value), E(anotherValue) {}
+};
+
+class A : public B, public C {
+public:
+    A(int value = 3, int anotherValue = 4, std::string branchName="right") : B(value, anotherValue), C(branchName) {}
+};
+
 int main( ) {
     DECLARE_CLASS(A);
     DECLARE_CLASS(B);
     DECLARE_CLASS(C);
     DECLARE_CLASS(D);
+    DECLARE_CLASS(E);
 
-    DERIVED(B, A);
-    DERIVED(C, D);
-    DERIVED(C, B);
+    DERIVED(B, D);
+    DERIVED(B, E);
+    DERIVED(A, B);
+    DERIVED(A, C);
 
 
-    A* a = NEW_RTTI(B);
-    A* b = NEW_RTTI(B);
-    A* c = NEW_RTTI(A);
-    B* d = NEW_RTTI(B);
-    std::cout << TYPEID(a).ToString() << "\n";
-    std::cout << EQUALS(a, b) << "\n";
-    std::cout << EQUALS(a, c) << "\n";
+    B* ba = NEW_RTTI(A);
+    E* ea = NEW_RTTI(A);
+    C* ca = NEW_RTTI(A);
+    D* db = NEW_RTTI(B);
+    std::cout << TYPEID(ba).ToString() << "\n";
+    std::cout << TYPEID(ea).ToString() << "\n";
+    std::cout << TYPEID(ca).ToString() << "\n";
+    std::cout << TYPEID(db).ToString() << "\n";
+    std::cout << EQUALS(ba, ea) << "\n";
+    std::cout << EQUALS(ba, db) << "\n";
 
-    B* bb = DYNAMIC_CAST(A, B, b);
-    std::cout << EQUALS(d, bb) << "\n";
+//    B* bb = DYNAMIC_CAST(A, B, b);
+//    std::cout << EQUALS(d, bb) << "\n";
 
-//    std::cout << a.a << "\n";
-//    std::cout << "CLASS counter: " << CLASS_COUNTER << "\n";
-//    std::cout << globalTest.size() << "\n";
-//    __Register test("A");
-//    std::cout << registeredClasses.size();
-//    std::cout << CLASS_COUNTER << "\n";
-//    std::string name = "A";
-//    std::cout << registeredClasses.size() << "\n";
-//    registeredClasses["A"] = nullptr;
-//    std::cout << registeredClasses.size() << "\n";
-//    __TypeInfoPtr infoPtr = std::make_shared<__TypeInfo>(name, 0);
-//    registeredClasses[name] = infoPtr;
-
-//    __TypeInfoPtr info = TYPEID(A);
-//    std::cout << info->ToString();
     return 0;
 }
