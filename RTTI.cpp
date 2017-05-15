@@ -46,7 +46,7 @@ std::pair<bool, std::ptrdiff_t> __CheckClassHierarchy( const std::string &childN
 
 bool __CheckActualHierarchy( const std::string &childName, std::ptrdiff_t parentPointer) {
     bool isInherited = false;
-    auto parentInfos = GL::Globals::registeredPointers.at(parentPointer)->getParentInfos();
+    auto parentInfos = GL::Globals::registeredClasses.at(childName)->getParentInfos();
     auto parentName = GL::Globals::registeredPointers.at(parentPointer)->getName();
     int numOfParents = static_cast<int>(parentInfos.size( ));
     if ( numOfParents ) {

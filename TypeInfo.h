@@ -42,3 +42,6 @@ private:
 
 bool operator ==(const __TypeInfo &left, const __TypeInfo &right);
 
+bool operator ==(int null, const __TypeInfo &right);
+
+bool operator ==(const __TypeInfo &left, int null);

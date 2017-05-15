@@ -42,3 +42,11 @@ __ParentInfo::__ParentInfo( const std::shared_ptr<__TypeInfo> &infoPtr, std::ptr
 bool operator ==(const __TypeInfo &left, const __TypeInfo &right) {
     return left.getHash() == right.getHash();
 }
+
+bool operator ==(int null, const __TypeInfo &right) {
+    return false;
+}
+
+bool operator ==(const __TypeInfo &left, int null) {
+    return false;
+}

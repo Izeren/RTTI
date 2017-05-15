@@ -48,5 +48,7 @@ AddParentInfo(#PARENT, GL::Globals::registeredClasses.at(#PARENT), __GetParentOf
 #define DECLARE_CLASS( T ) __Register __register##T (#T);
 #define NEW_RTTI(T, ...) reinterpret_cast<T *>(GL::Globals::temp = \
 reinterpret_cast<std::ptrdiff_t>(new T(__VA_ARGS__)));\
-GL:Globals::registeredPointers[GL::Globals::temp] = GL::Globals::registeredClasses.at(#T);
+GL::Globals::registeredPointers[GL::Globals::temp] = GL::Globals::registeredClasses.at(#T)
 #define DYNAMIC_CAST(FROM, TO, pointer) __DynamicCast<TO, FROM>(pointer, #TO, #FROM)
+
+#define EQUALS(LEFT, RIGHT) (TYPEID(LEFT) == TYPEID(RIGHT))

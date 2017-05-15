@@ -30,7 +30,16 @@ int main( ) {
 
 
     A* a = NEW_RTTI(B);
+    A* b = NEW_RTTI(B);
+    A* c = NEW_RTTI(A);
+    B* d = NEW_RTTI(B);
     std::cout << TYPEID(a).ToString() << "\n";
+    std::cout << EQUALS(a, b) << "\n";
+    std::cout << EQUALS(a, c) << "\n";
+
+    B* bb = DYNAMIC_CAST(A, B, b);
+    std::cout << EQUALS(d, bb) << "\n";
+
 //    std::cout << a.a << "\n";
 //    std::cout << "CLASS counter: " << CLASS_COUNTER << "\n";
 //    std::cout << globalTest.size() << "\n";
