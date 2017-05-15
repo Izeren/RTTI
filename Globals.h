@@ -7,13 +7,16 @@
 #include <map>
 
 #include <vector>
-
+#include <cstddef>
 class __TypeInfo;
 
-extern int CLASS_COUNTER;
-
-extern std::map<std::string, std::shared_ptr<__TypeInfo>> registeredClasses;
-
-extern const std::ptrdiff_t DUMMY_POINTER;
-
-extern std::vector<int> globalTest;
+namespace GL {
+    class Globals {
+    public:
+        static int CLASS_COUNTER;
+        static const std::ptrdiff_t DUMMY_POINTER;
+        static std::map<std::string, std::shared_ptr<__TypeInfo>> registeredClasses;
+        static std::map<std::ptrdiff_t, std::shared_ptr<__TypeInfo>> registeredPointers;
+        static std::ptrdiff_t temp;
+    };
+};

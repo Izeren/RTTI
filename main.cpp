@@ -5,22 +5,35 @@
 #include "Globals.h"
 
 class A {
-public:
-    int a;
-    A(int a = 0) {
-        CLASS_COUNTER = 10;
-        this->a = CLASS_COUNTER;
-        globalTest.push_back(0);
-        std::cout << globalTest.size() << "\n";
-//        registeredClasses["test"] = nullptr;
-    }
 };
 
-A a(0);
+class B : public A {
+
+};
+
+class D {};
+
+class C : public D, public B {
+
+};
+
+//A a(0);
 int main( ) {
-    std::cout << a.a << "\n";
-    std::cout << "CLASS counter: " << CLASS_COUNTER << "\n";
-    std::cout << globalTest.size() << "\n";
+    DECLARE_CLASS(A);
+    DECLARE_CLASS(B);
+    DECLARE_CLASS(C);
+    DECLARE_CLASS(D);
+
+    DERIVED(B, A);
+    DERIVED(C, D);
+    DERIVED(C, B);
+
+
+    A* a = NEW_RTTI(B);
+    std::cout << TYPEID(a).ToString() << "\n";
+//    std::cout << a.a << "\n";
+//    std::cout << "CLASS counter: " << CLASS_COUNTER << "\n";
+//    std::cout << globalTest.size() << "\n";
 //    __Register test("A");
 //    std::cout << registeredClasses.size();
 //    std::cout << CLASS_COUNTER << "\n";

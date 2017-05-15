@@ -2,17 +2,14 @@
 // Created by izeren on 5/15/17.
 //
 
-#include <string>
-#include <memory>
-#include <map>
-#include <vector>
+#include "Globals.h"
 
-class __TypeInfo;
+int GL::Globals::CLASS_COUNTER = 0;
 
-int CLASS_COUNTER = 0;
+const std::ptrdiff_t GL::Globals::DUMMY_POINTER = 0;
 
-std::map<std::string, std::shared_ptr<__TypeInfo>> registeredClasses = {};
+std::ptrdiff_t GL::Globals::temp = 0;
 
-const std::ptrdiff_t DUMMY_POINTER = 0;
+std::map<std::string, std::shared_ptr<__TypeInfo>> GL::Globals::registeredClasses = {};
 
-std::vector<int> globalTest = {};
+std::map<std::ptrdiff_t, std::shared_ptr<__TypeInfo>> GL::Globals::registeredPointers = {};
