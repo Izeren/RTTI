@@ -18,8 +18,8 @@ public:
 
 class C {
 public:
-    std::string branchName;
-    C(std::string branchName = "") : branchName(branchName) {}
+    int oneMore;
+    C(int oneMore = -1) : oneMore(oneMore) {}
 };
 
 class B : public D, public E {
@@ -29,7 +29,7 @@ public:
 
 class A : public B, public C {
 public:
-    A(int value = 3, int anotherValue = 4, std::string branchName="right") : B(value, anotherValue), C(branchName) {}
+    A(int value = 3, int anotherValue = 4, int oneMore=5) : B(value, anotherValue), C(oneMore) {}
 };
 
 int main( ) {
@@ -65,6 +65,11 @@ int main( ) {
     std::cout << TYPEID(eba).ToString();                  // Name: A Hash: 0 [ B C ]
     std::cout << "value: " << eba->value << "\n";         // value: 3
     std::cout << EQUALS(eba, ea) << "\n";                 // true
+
+    delete ba;
+    delete ea;
+    delete ca;
+    delete db;
 
     return 0;
 }
