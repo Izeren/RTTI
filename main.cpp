@@ -45,19 +45,26 @@ int main( ) {
     DERIVED(A, C);
 
 
-    B* ba = NEW_RTTI(A);
-    E* ea = NEW_RTTI(A);
-    C* ca = NEW_RTTI(A);
-    D* db = NEW_RTTI(B);
-    std::cout << TYPEID(ba).ToString() << "\n";
-    std::cout << TYPEID(ea).ToString() << "\n";
-    std::cout << TYPEID(ca).ToString() << "\n";
-    std::cout << TYPEID(db).ToString() << "\n";
-    std::cout << EQUALS(ba, ea) << "\n";
-    std::cout << EQUALS(ba, db) << "\n";
+    B* ba = NEW_RTTI(B, A);
+    E* ea = NEW_RTTI(E, A);
+    C* ca = NEW_RTTI(C, A);
+    D* db = NEW_RTTI(D, B);
+    std::cout << TYPEID(ba).ToString();                   // Name: A Hash: 0 [ B C ]
+    std::cout << TYPEID(ea).ToString();                   // Name: A Hash: 0 [ B C ]
+    std::cout << TYPEID(ca).ToString();                   // Name: A Hash: 0 [ B C ]
+    std::cout << TYPEID(db).ToString();                   // Name: B Hash: 1 [ D E ]
+    std::cout << EQUALS(ba, ea) << "\n";                  // true
+    std::cout << EQUALS(ba, db) << "\n";                  // false
 
-//    B* bb = DYNAMIC_CAST(A, B, b);
-//    std::cout << EQUALS(d, bb) << "\n";
+    B* bb = DYNAMIC_CAST(D, B, db);
+    std::cout << TYPEID(bb).ToString();                   // Name: B Hash: 1 [ D E ]
+    std::cout <<"Value: " <<  bb->value << "\n";          // Value: 1
+    std::cout << EQUALS(db, bb) << "\n";                  // true
+
+    B* eba = DYNAMIC_CAST(E, B, ea);
+    std::cout << TYPEID(eba).ToString();                  // Name: A Hash: 0 [ B C ]
+    std::cout << "value: " << eba->value << "\n";         // value: 3
+    std::cout << EQUALS(eba, ea) << "\n";                 // true
 
     return 0;
 }

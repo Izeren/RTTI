@@ -34,12 +34,14 @@ bool __WhetherChildIsParent( const std::string &childName, const std::string &pa
 template<typename TO, typename FROM>
 TO *__DynamicCast( FROM *f, const std::string &nameTo, const std::string &nameFrom ) {
     bool whetherClassInherited = __WhetherChildIsParent( nameTo, nameFrom );
-    bool whetherActualClassInherited = __WhetherChildIsParent( nameTo,
-                                                               Globals::registeredPointers.at(
-                                                                       reinterpret_cast<std::ptrdiff_t>(f))->getName( ));
+    bool whetherActualClassInherited = __WhetherChildIsParent( Globals::registeredPointers.at(
+            reinterpret_cast<std::ptrdiff_t>(f))->getName( ), nameTo );
     if ( whetherClassInherited && whetherActualClassInherited ) {
-        auto diff = __GetDiffBetweenClasses(nameTo, nameFrom);
-        return reinterpret_cast<TO *>(reinterpret_cast<std::ptrdiff_t>(f) - diff);
+        auto diff = __GetDiffBetweenClasses( nameTo, nameFrom );
+        auto result = reinterpret_cast<TO *>(reinterpret_cast<std::ptrdiff_t>(f) - diff);
+        GL::Globals::registeredPointers[ reinterpret_cast<std::ptrdiff_t>(result) ] = Globals::registeredPointers.at(
+                reinterpret_cast<std::ptrdiff_t>(f));
+        return result;
     } else {
         return nullptr;
     }
@@ -52,8 +54,8 @@ AddParentInfo(#PARENT, GL::Globals::registeredClasses.at(#PARENT), __GetParentOf
 
 #define DECLARE_CLASS( T ) __Register __register##T (#T);
 
-#define NEW_RTTI( T, ... ) reinterpret_cast<T *>(GL::Globals::temp = \
-reinterpret_cast<std::ptrdiff_t>(new T(__VA_ARGS__)));\
+#define NEW_RTTI( POINTER_TYPE, T, ... ) reinterpret_cast<POINTER_TYPE *>(GL::Globals::temp = \
+reinterpret_cast<std::ptrdiff_t>(reinterpret_cast<POINTER_TYPE *>(new T(__VA_ARGS__))));\
 GL::Globals::registeredPointers[GL::Globals::temp] = GL::Globals::registeredClasses.at(#T)
 
 #define DYNAMIC_CAST( FROM, TO, pointer ) __DynamicCast<TO, FROM>(pointer, #TO, #FROM)
